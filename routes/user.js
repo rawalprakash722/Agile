@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const router = express.Router();
-const auth = require('../auth');
+
 
 
 router.get('/',(req,res,next)=> {
@@ -59,58 +59,30 @@ router.post('/login', (req, res, next) => {
                     }).catch(next);
             }
         }).catch(next);
-})
-
-router.get('/viewUser', (req, res, next) => {
-    User.find({role:'customer'})
-    .then((user)=>{
-        status=200;
-        res.json(user);
-    })
-    .catch((err)=>next(err));
-})
-
-router.get('/me', auth.verifyUser, (req, res) => {
-   res.json({ _id: req.user._id, fullname: req.user.fullname, email:req.user.email});
 });
 
-router.put('/me', auth.verifyUser, (req, res, next) => {
-    User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true })
-        .then((user) => {
-            res.json({ _id: user._id,fullname: user.fullname, email: user.email });
-        }).catch(next);
-});
+const mongoose = require('mongoose');
 
-router.post('/verifyPassword', (req, res, next) => {
-    User.findById(req.body.id)
-        .then((user) => {
-            bcrypt.compare(req.body.password, user.password)
-                .then((isMatch) => {
-                    if (isMatch) {
-                        res.json({status:200})
-                    }
-                    else{
-                        res.json({status:401})
-                    }
-                }).catch(next);
-        })
-        .catch(next);
-})
+const userSchema = new mongoose.Schema({
+    fullname:{
+        type:String,
+        required:true
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
+    role: {
+    type: String,
+    default: 'admin',
+    enum: ['customer', 'admin','restaurant']
+    },
+}, {timestamps:true});
 
-router.put('/updatePassword', (req, res, next) => {
-    let password = req.body.password;
-    bcrypt.hash(password, 10, function (err, hash) {
-        if (err) {
-            let err =  new Error('Could not hash!');
-            err.status = 500;
-            return next(err);
-        }
-        User.findByIdAndUpdate(req.body.id, { $set: {password:hash} }, { new: true })
-            .then((user) => {
-                res.json({status:200})
-            })
-            .catch(next);
-    })
-})
-
+module.exports = mongoose.model('User',userSchema);
 module.exports = router;

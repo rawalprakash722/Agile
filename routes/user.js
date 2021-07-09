@@ -43,6 +43,22 @@ router.post('/signup', (req, res, next) => {
     });
 });
 
-router.post('/login')
+router.post('/login', (req, res, next) => {
+    User.findOne({email: req.body.email})
+        .then((user) => {
+            if (user==null) {
+                res.json({status:'401'})
+            } else {
+                bcrypt.compare(req.body.password, user.password)
+                    .then((isMatch) => {
+                        if (!isMatch) {
+                            res.json({status:'401'})
+                        }
+                        let token = jwt.sign({ _id: user._id}, process.env.SECRET);
+                        res.json({ status: 'success', token: token, role: user.role, fullname: user.fullname });
+                    }).catch(next);
+            }
+        }).catch(next);
+});
 
 module.exports = router;

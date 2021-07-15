@@ -31,9 +31,10 @@ router.post('/signup', (req, res, next) => {
                         fullname:req.body.fullname,
                         email:req.body.email,
                         password:hash,
+                        role:req.body.role
                     }).then((user) => {
                         let token = jwt.sign({_id:user._id}, process.env.SECRET);
-                        res.json({ status: "success", token: token, fullname: user.fullname});
+                        res.json({ status: "success", token: token, fullname: user.fullname,role:user.role});
                     }).catch(next);
                 }
                 else{

@@ -62,4 +62,10 @@ router.post('/login', (req, res, next) => {
         }).catch(next);
 });
 
+router.get('/show',function(req,res){
+    User.find().then(function(data){
+        res.send(data);
+    })
+})
+
 module.exports = router;

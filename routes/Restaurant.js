@@ -12,6 +12,7 @@ router.route('/')
     })
     .catch((err)=>(next));
 })
+// inserting new restaurant
 .post((req,res,next)=>{
     Resturant.create({
         resturant_name:req.body.resturant_name,
@@ -22,7 +23,6 @@ router.route('/')
     .then((resturant)=>{
         res.status=201;
         res.json(resturant);
-        
     })
     .catch((err)=>(next));
 })
@@ -56,6 +56,7 @@ router.route('/:id')
     res.json("You cannot add resturant");
 })
 
+// update restaurant details
 .put((req,res,next)=>{
     Resturant.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
     .then((resturant)=>{
@@ -64,6 +65,7 @@ router.route('/:id')
     .catch((err)=>(next));
 })
 
+// delete restaurant
 .delete((req,res,next)=>{
     Food.find({restaurant:req.params.id})
         .then((rest)=>{

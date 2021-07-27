@@ -9,7 +9,6 @@ router.route('/')
     .then((cat)=>{
         status=200;
         res.json(cat);
-
     })
     .catch((err)=>next(err));
 
@@ -65,7 +64,6 @@ router.route('/')
  })
 
  // Deleting particular category by id
-
  .delete((req,res,next)=>{
      Cat.findByIdAndDelete(req.params.id)
      .then((cat)=>{

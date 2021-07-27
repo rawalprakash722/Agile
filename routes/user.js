@@ -5,7 +5,6 @@ const User = require('../models/user');
 const router = express.Router();
 
 
-
 router.get('/',(req,res,next)=> {
     User.find({})
     .then((user)=>{
@@ -18,6 +17,7 @@ router.get('/',(req,res,next)=> {
 
 router.post('/signup', (req, res, next) => {
     let password = req.body.password;
+    // encrypt password
     bcrypt.hash(password, 10, function (err, hash) {
         if (err) {
             let err =  new Error('Could not hash!');
@@ -26,6 +26,7 @@ router.post('/signup', (req, res, next) => {
         }
         User.findOne({email:req.body.email})
             .then((user)=>{
+                // use only new and valid email
                 if(user==null){
                     User.create({
                         fullname:req.body.fullname,
@@ -44,12 +45,15 @@ router.post('/signup', (req, res, next) => {
     });
 });
 
+// login system
 router.post('/login', (req, res, next) => {
+    // check the email
     User.findOne({email: req.body.email})
         .then((user) => {
             if (user==null) {
                 res.json({status:'401'})
             } else {
+                // compare password
                 bcrypt.compare(req.body.password, user.password)
                     .then((isMatch) => {
                         if (!isMatch) {

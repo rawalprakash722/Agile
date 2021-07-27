@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const foodcategorySchema = new mongoose.Schema({
     category:{
         type:String,
-       
     },
     catImg:{
         type:String,

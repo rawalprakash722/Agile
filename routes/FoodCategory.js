@@ -27,8 +27,6 @@ router.route('/')
     .catch((err) => next(err));
 })
 
-//update 
-
 .put((req,res,next)=>{
     res.statusCode=201;
     res.json("You cannot update category");
@@ -57,7 +55,7 @@ router.route('/')
      res.json("You cannot add category on here");
  })
 
- //Updating the particular each category item by id
+ //Updating the particular category item by id
  .put((req,res,next)=>{
      Cat.findByIdAndUpdate(req.params.id,{$set : req.body},{new:true})
      .then((cat)=>{
@@ -66,7 +64,7 @@ router.route('/')
      .catch((err)=> next(err));
  })
 
- // Deleting particular each category by id
+ // Deleting particular category by id
 
  .delete((req,res,next)=>{
      Cat.findByIdAndDelete(req.params.id)

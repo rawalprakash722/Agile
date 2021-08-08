@@ -20,7 +20,7 @@ const dotenv = require("dotenv").config();
     useFindAndModify: false, 
     useCreateIndex: true 
   }).then((db)=>{
-      console.log("Succesfully connected to mongodb database server");
+      console.log("Succesfully connected to mongodb server");
   },(err)=>console.log(err));
 
   app.use(express.static(__dirname + "/public"));

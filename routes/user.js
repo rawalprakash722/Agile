@@ -31,9 +31,10 @@ router.post('/signup', (req, res, next) => {
                         fullname:req.body.fullname,
                         email:req.body.email,
                         password:hash,
+                        role:req.body.role
                     }).then((user) => {
                         let token = jwt.sign({_id:user._id}, process.env.SECRET);
-                        res.json({ status: "success", token: token, fullname: user.fullname});
+                        res.json({ status: "success", token: token, fullname: user.fullname,role:user.role});
                     }).catch(next);
                 }
                 else{
@@ -59,6 +60,12 @@ router.post('/login', (req, res, next) => {
                     }).catch(next);
             }
         }).catch(next);
+})
+
+router.get('/user/show',function(req,res){
+    User.find().then(function(data){
+        res.send(data);
+    })
 })
 
 router.get('/viewUser', (req, res, next) => {

@@ -6,6 +6,8 @@ const foodCat = require('./routes/foodCategory');
 const resturantRouter = require('./routes/Restaurant');
 const food = require('./routes/Food');
 const cartRouter = require('./routes/cart');
+const orderRouter = require('./routes/order');
+const vieworder=require('./routes/vieworder')
 const auth = require('./auth');
 const app = express();
 const cors = require('cors');
@@ -33,9 +35,11 @@ const dotenv = require("dotenv").config();
   app.use('/foodCat',foodCat);
   app.use('/resturants',resturantRouter);
   app.use('/foods', food);
+  app.use(vieworder)
 
   app.use(auth.verifyUser);
   app.use('/cart',cartRouter);
+  app.use('/order',orderRouter);
 
 
 

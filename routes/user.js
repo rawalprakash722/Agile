@@ -120,4 +120,15 @@ router.put('/updatePassword', (req, res, next) => {
     })
 })
 
+router.get('/user/single/:id',function(req,res){
+    const id=req.params.id;
+    User.findOne({_id:id}).then(function(data){
+        res.status(200).json(data)
+        console.log("shown")
+    }).catch(function(e){
+        res.status(500).json({error:e})
+        console.log("not")
+    })
+})
+
 module.exports = router;

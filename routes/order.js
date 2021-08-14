@@ -47,11 +47,11 @@ router.route('/')
     })
 });
 
-
+var populateQuery = [{path:'user'}, {path:'food'}];
 router.route('/:id')
 .get(auth.verifyUser, (req,res,next)=>{
     Order.find({'dateTime':req.params.id})
-    .populate({path:'food'})
+    .populate(populateQuery)
     .then((order)=>{
         res.statusCode = 200;
         res.json(order);

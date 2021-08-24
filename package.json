@@ -2,9 +2,16 @@
   "name": "agile",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
+  "engines": {
+    "node": "14.15.1",
+    "npm":"6.14.8"
+    },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false npm install --prefix food && npm run build --prefix food"
+
   },
   "author": "",
   "license": "ISC",

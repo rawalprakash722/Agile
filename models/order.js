@@ -1,32 +1,11 @@
 const mongoose = require('mongoose');
 const orderSchema =  new mongoose.Schema({
-    user1:{
+    user:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref:'user',
         required:true
     },
-    food1:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Food',
-        required:true
-    },
-    quanity1:{
-        type:String,
-        required:true
-    },
-    notes1:{
-        type:String,
-    },
-    dateTime1:{
-        type:String,
-        required:true
-    }
-    user1:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        required:true
-    },
-    food1:{
+    food:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Food',
         required:true

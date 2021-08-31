@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const{check, validationResult} = require('express-validator')
 const User = require('../models/user');
 const router = express.Router();
 const auth = require('../auth');
@@ -16,9 +17,17 @@ router.get('/',(req,res,next)=> {
 
 })
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup',[
+    check('fullname','Username is required').not().isEmpty(),
+    check('email','Contact no is required').not().isEmpty(),
+    check('email','Email invalid').isEmail(),
+    check('password','Password is required').not().isEmpty(),
+], (req, res, next) => {
     let password = req.body.password;
     bcrypt.hash(password, 10, function (err, hash) {
+        const errors = validationResult(req)
+    
+    if(errors.isEmpty()){
         if (err) {
             let err =  new Error('Could not hash!');
             err.status = 500;
@@ -34,14 +43,20 @@ router.post('/signup', (req, res, next) => {
                         role:req.body.role
                     }).then((user) => {
                         let token = jwt.sign({_id:user._id}, process.env.SECRET);
-                        res.json({ status: "success", token: token, fullname: user.fullname,role:user.role});
+                        res.json({ status: "success", token: token, fullname: user.fullname,role:user.role, message:"Register success"});
                     }).catch(next);
                 }
                 else{
                     res.json({status:"exists"});
                 }
             }).catch(next);
-    });
+    }
+    else{
+        console.log(errors.array())
+        res.status(400).json(errors.array());
+    } 
+
+});
 });
 
 router.post('/login', (req, res, next) => {
@@ -118,6 +133,18 @@ router.put('/updatePassword', (req, res, next) => {
             })
             .catch(next);
     })
+})
+
+router.delete('/user/deletee/:id', 
+//not working
+auth.verifyUser,
+function(req,res){
+    const id22=req.params.id;
+    User.deleteOne({_id:id22}).then(function(){
+        res.status(200).json({message:"Delete Success"})
+        console.log("De;ete");
+    })
+
 })
 
 router.get('/user/single/:id',function(req,res){

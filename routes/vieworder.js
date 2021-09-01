@@ -1,6 +1,7 @@
 const express = require('express');
 const Order = require('../models/order');
 const router = express.Router();
+const auth = require('../auth');
 
 
 var populateQuery = [{path:'user'}, {path:'food'}];
@@ -10,7 +11,7 @@ var populateQuery = [{path:'user'}, {path:'food'}];
 //     })
 // })
 router.route('/orders/show/admin')
-.get((req,res,next)=>{
+.get(auth.verifyUser,(req,res,next)=>{
     Order.find()
     .populate(populateQuery)
     .then((order)=>{

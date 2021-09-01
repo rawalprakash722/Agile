@@ -19,7 +19,7 @@ router.get('/',(req,res,next)=> {
 
 router.post('/signup',[
     check('fullname','Username is required').not().isEmpty(),
-    check('email','Contact no is required').not().isEmpty(),
+    check('email','Email is required').not().isEmpty(),
     check('email','Email invalid').isEmail(),
     check('password','Password is required').not().isEmpty(),
 ], (req, res, next) => {
@@ -39,11 +39,12 @@ router.post('/signup',[
                     User.create({
                         fullname:req.body.fullname,
                         email:req.body.email,
+                        contact:req.body.contact,
                         password:hash,
                         role:req.body.role
                     }).then((user) => {
                         let token = jwt.sign({_id:user._id}, process.env.SECRET);
-                        res.json({ status: "success", token: token, fullname: user.fullname,role:user.role, message:"Register success"});
+                        res.json({ status: "success", token: token, fullname: user.fullname,contact:user.contact,role:user.role, message:"Register success"});
                     }).catch(next);
                 }
                 else{
@@ -93,13 +94,13 @@ router.get('/viewUser', (req, res, next) => {
 })
 
 router.get('/me', auth.verifyUser, (req, res) => {
-   res.json({ _id: req.user._id, fullname: req.user.fullname, email:req.user.email});
+   res.json({ _id: req.user._id, fullname: req.user.fullname, email:req.user.email, contact:req.user.contact});
 });
 
 router.put('/me', auth.verifyUser, (req, res, next) => {
     User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true })
         .then((user) => {
-            res.json({ _id: user._id,fullname: user.fullname, email: user.email });
+            res.json({ _id: user._id,fullname: user.fullname, email: user.email, contact:user.contact });
         }).catch(next);
 });
 

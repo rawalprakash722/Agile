@@ -14,10 +14,15 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    contact:{
+        type:String,
+        required: true
+
+    },
     role: {
     type: String,
     default: 'customer',
-    enum: ['customer', 'admin']
+    enum: ['customer', 'admin',"restaurant"]
     },
 }, {timestamps:true});
 

@@ -8,8 +8,8 @@
     "npm": "6.14.8"
   },
   "scripts": {
+    "test": "jest",
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix food && npm run build --prefix food"
   },
   "author": "",
@@ -25,5 +25,19 @@
     "mongoose": "^5.13.2",
     "multer": "^1.4.2",
     "path": "^0.12.7"
+  },
+    "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "babel-jest": "^26.6.3",
+    "jest": "^27.0.6",
+    "supertest": "^6.1.6"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 1000,
+    "coveragePathignorePatterns": [
+      "/node_modules/"
+    ]
   }
 }

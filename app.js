@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const userRouter = require('./routes/user');
 const uploadRouter = require('./routes/uploads');
-const foodCat = require('./routes/foodCategory');
+const foodCat = require('./routes/FoodCategory');
 const resturantRouter = require('./routes/Restaurant');
 const food = require('./routes/Food');
 const cartRouter = require('./routes/cart');
@@ -40,7 +40,7 @@ const dotenv = require("dotenv").config();
   app.use('/foods', food);
   app.use(vieworder)
 
-  app.use(auth.verifyUser);
+  // app.use(auth.verifyUser);
   app.use('/cart',cartRouter);
   app.use('/order',orderRouter);
 
